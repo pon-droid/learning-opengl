@@ -37,7 +37,7 @@ unsigned int gen_shader(){
 	unsigned int vertex_shader;
 	vertex_shader = glCreateShader(GL_VERTEX_SHADER);
 
-	glShaderSource(vertex_shader, 1, &shader_src, nullptr);
+	glShaderSource(vertex_shader, 1, &shader_src, NULL);
 	
     
 
@@ -63,7 +63,7 @@ unsigned int gen_shader(){
 
 	unsigned int frag_shader;
 	frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(frag_shader, 1, &frag_src, nullptr);
+	glShaderSource(frag_shader, 1, &frag_src, NULL);
 	glCompileShader(frag_shader);
 
 	glGetShaderiv(frag_shader, GL_COMPILE_STATUS, &success);
@@ -136,19 +136,57 @@ int main() {
   glViewport(0,0,WW,WH);
   glfwSetFramebufferSizeCallback(window, update_winsize);
 
+  auto shader = gen_shader();
+
+
   //glUseProgram(gen_shader());
 
    
 
   	float vertices[] = {
-		-.5, -.5, 0,
-		.5, -.5, 0,
-		0, .5, 0
+		.5, .5, 0,
+		0, 0, 0,
+		.5,0,0,
+
+		-.5,-.5,0,
+		-.5,0,0
 	};
 
-	unsigned int VBO, VAO;
+	unsigned int indices[] = {
+		0,1,2, // first
+		1,3,4 // second
+	};
+
+/*
+   float vertices[] = {
+   	.5,.5,0,
+   	.5,-.5,0,
+   	-.5,-.5,0,
+   	-.5,.5,0
+   };
+
+    unsigned int indices[] = {
+    	0, 1, 3,
+    	1, 2, 3
+    };
+
+	float vertices2[] = {
+         0.5f,  0.5f, 0.0f,  // top right
+         0.5f, -0.5f, 0.0f,  // bottom right
+        -0.5f, -0.5f, 0.0f,  // bottom left
+        -0.5f,  0.5f, 0.0f   // top left 
+    };
+    unsigned int indices2[] = {  // note that we start from 0!
+        0, 1, 3,  // first Triangle
+        1, 2, 3   // second Triangle
+    };
+*/
+
+	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+
 
 	glBindVertexArray(VAO);
 
@@ -156,8 +194,10 @@ int main() {
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	
 
-    
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -166,8 +206,8 @@ int main() {
 
     glBindVertexArray(0);
     
-    
-	glUseProgram(gen_shader());
+
+
 
   
   while(!glfwWindowShouldClose(window)){
@@ -178,10 +218,18 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     
-    
+
+    glUseProgram(shader);
     glBindVertexArray(VAO);
+    /*
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    
+    glDrawArrays(GL_TRIANGLES, 3, 6);
+    */
+
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
   	glfwSwapBuffers(window);
   	glfwPollEvents();
   }
