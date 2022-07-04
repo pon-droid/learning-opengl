@@ -1,0 +1,18 @@
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 Colour;
+
+
+
+//out vec3 send_colour;
+out vec3 positions;
+
+//uniform float Offset;
+
+void main(){
+// * -1 for the upside down
+gl_Position = vec4(aPos.x, -1 * aPos.y, aPos.z, 1.0);
+//send_colour = Colour;
+positions = aPos;
+
+}

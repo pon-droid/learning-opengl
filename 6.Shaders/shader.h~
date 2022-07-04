@@ -1,0 +1,10 @@
+#pragma once
+
+#include "glad.c"
+#include <GLFW/glfw.h>
+#include <string>
+
+struct Shader {
+  unsigned int program; //shader program
+
+  Shader(std::string vertex_dir, std::string frag_dir) 
