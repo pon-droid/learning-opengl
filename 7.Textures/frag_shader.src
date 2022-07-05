@@ -1,0 +1,12 @@
+#version 330 core
+out vec4 FragColor;
+in vec3 send_colour;
+in vec2 Coord;
+
+uniform sampler2D clouds;
+uniform sampler2D troll;
+
+void main(){
+//FragColor = texture(ourTexture, Coord) * vec4(send_colour, 1.0);
+FragColor   = mix(texture(clouds, Coord), texture(troll, vec2(-Coord.x, Coord.y)), 0.2);
+}
