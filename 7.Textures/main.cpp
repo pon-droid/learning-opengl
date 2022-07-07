@@ -259,6 +259,15 @@ unsigned int gen_texture(const std::string& filename, const std::string& png){
   return texture;
 }
 
+void set_ratio(GLFWwindow *window, float& mix){
+  if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
+    mix += 0.01;
+  } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
+    mix -= 0.01;
+  }
+
+}
+
 int main() {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -286,15 +295,22 @@ int main() {
 
 
   
-
+  /*
   
   float vertices[] = {      //Vertices   //Colours           //Textures
                      -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 
-		     -0.5f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   0.0f, 1.0f,
-		      0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,   1.0f, 0.0f,
-		      0.5f, 0.5f, 0.0f,  1.0f, 1.0f, 0.0f,   1.0f, 1.0f
+		     -0.5f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   0.0f, 2.0f,
+		      0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,   2.0f, 0.0f,
+		      0.5f, 0.5f, 0.0f,  1.0f, 1.0f, 0.0f,   2.0f, 2.0f
    };
+  */
 
+   float vertices[] = {      //Vertices   //Colours           //Textures
+                     -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 
+		     -0.5f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   0.0f, .55f,
+		      0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,   0.55f, 0.0f,
+		      0.5f, 0.5f, 0.0f,  1.0f, 1.0f, 0.0f,   0.55f, 0.55f
+   };
 
 
   unsigned int indices[] = {  
@@ -348,16 +364,19 @@ int main() {
   shader.set_int("clouds", 0);
   shader.set_int("troll", 1);
   
+  float mix = 0;
   
   while (!glfwWindowShouldClose(window)) {
     //offset -= 0.001;
     esc_close(window);
+    set_ratio(window,mix);
 
     glClearColor(0.8f, 0.1f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
 
     shader.use();
+    shader.set_float("mixer", mix);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, clouds);
 

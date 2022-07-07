@@ -91,7 +91,7 @@ struct Shader {
     shader_gen(vertex_src.c_str(), frag_src.c_str());
   }
 
-  void use() { glUseProgram(program); }
+  void use() { glUseProgram(program); std::cout << "HELLO\n"; }
 
   void set_int(const std::string &var, int val) const {
     glUniform1i(glGetUniformLocation(program, var.c_str()), val);
@@ -100,4 +100,9 @@ struct Shader {
   void set_float(const std::string &var, float val) const {
     glUniform1f(glGetUniformLocation(program, var.c_str()), val);
   }
+
+  void set_mat(const std::string &var, const GLfloat *m) const {
+    glUniformMatrix4fv(glGetUniformLocation(program, var.c_str()), 1, GL_FALSE, m);
+  }
+  
 };

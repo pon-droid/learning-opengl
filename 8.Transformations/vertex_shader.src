@@ -8,12 +8,14 @@ out vec3 send_colour;
 out vec2 Coord;
 
 //uniform float Offset;
-uniform mat4 transform;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 void main(){
-// * -1 for the upside down
-gl_Position = transform * vec4(aPos, 1.0f);
-//gl_Position = vec4(aPos, 1.0);
+// Multiplication is actually happening right to left
+gl_Position = projection * view * model * vec4(aPos, 1.0f);
+
 send_colour = Colour;
 Coord = aTexCoord;
 
