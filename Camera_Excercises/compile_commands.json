@@ -1,0 +1,17 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/x86_64-linux-gnu-g++-10",
+      "-c",
+      "-Wall",
+      "-Wno-pedantic",
+      "-std=c++14",
+      "-o",
+      "gl",
+      "main.cpp"
+    ],
+    "directory": "/home/tgallaher/int-git/learn_opengl/Camera_Excercises",
+    "file": "/home/tgallaher/int-git/learn_opengl/Camera_Excercises/main.cpp",
+    "output": "/home/tgallaher/int-git/learn_opengl/Camera_Excercises/main.o"
+  }
+]
